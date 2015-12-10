@@ -8,6 +8,11 @@ killall postgres
 # If there is a dir or file with the name we want for our datadir, delete it and create it again.
 rm -rf "$1"
 mkdir "$1"
+
+# Ignore database files
+echo ".gitignore" >> .gitignore
+echo "$1" >> .gitignore 
+
 # Set postgresuser
 export PGUSER="$3"
 
