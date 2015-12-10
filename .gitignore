@@ -1,7 +1,0 @@
-.gitignore
-
-#Database directory
-data
-
-#Password file
-password
