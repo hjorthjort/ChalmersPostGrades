@@ -17,3 +17,15 @@ CREATE TABLE Results (
 COPY Results
     FROM '--WORKINGDIR--/rawdata.csv'
     WITH DELIMITER ';';
+
+CREATE OR REPLACE VIEW GradedExams AS (
+    SELECT course, course_name, test_name, date, takers, 
+        CASE grade
+            WHEN 'U' THEN '0'
+            ELSE grade
+        END as gradeNbr
+    FROM Results
+    WHERE test_name LIKE 'Tentamen%'
+        AND grade <> 'G'
+    ORDER BY course, date, grade
+); 
