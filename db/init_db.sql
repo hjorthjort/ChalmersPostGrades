@@ -7,8 +7,13 @@ CREATE TABLE Kursresultat (
     provnamn VARCHAR(255),
     poang FLOAT,
     provdatum DATE,
-    betyg CHAR(1),
+    betyg CHAR(4),
     antal INT,
     andel INT,
-    PRIMARY KEY (kurs, provdatum)
+    PRIMARY KEY (kurs, provdatum, prov, betyg)
+
 );
+
+COPY Kursresultat
+    FROM '/Users/hjort/Code/ChalmersGrades/db/rawdata.csv'
+    WITH DELIMITER ';';
