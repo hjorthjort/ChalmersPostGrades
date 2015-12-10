@@ -15,7 +15,7 @@ rm -f .gitignore
 # Ignore database files
 printf ".gitignore\n" >> .gitignore
 printf "\n#Database directory\n$1\n" >> .gitignore 
-printf "\n#Password file\npassword\n" >> .gitignore
+printf "\n#Password file\n.password\n" >> .gitignore
 
 # Set postgresuser
 printf "Enter username: "
@@ -24,15 +24,15 @@ user="$line"
 export PGUSER="$user"
 
 # Get a password, store in variable $line, store in password file
-rm -f password
+rm -f .password
 printf "Enter password: "
 read -s line
 password="$line"
-printf "$password" > password
-chmod 600 password
+printf "$password" > .password
+chmod 600 .password
 
 # Create database
-initdb -D "$1" --username="$user" --pwfile=password
+initdb -D "$1" --username="$user" --pwfile=.password
 
 # Start the server and wait for it to start before proceeding (-w flag)
 pg_ctl -w -D "$1" -l "$1"/logfile start
