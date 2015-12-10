@@ -9,9 +9,13 @@ killall postgres
 rm -rf "$1"
 mkdir "$1"
 
+# Remove existing gitignore
+rm -f .gitignore
+
 # Ignore database files
-echo ".gitignore" >> .gitignore
-echo "$1" >> .gitignore 
+printf ".gitignore\n" >> .gitignore
+printf "\n#Database directory\n$1\n" >> .gitignore 
+printf "\n#Password file\npassword\n" >> .gitignore
 
 # Set postgresuser
 export PGUSER="$3"
