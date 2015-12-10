@@ -29,3 +29,11 @@ CREATE OR REPLACE VIEW GradedExams AS (
         AND grade <> 'G'
     ORDER BY course, date, grade
 ); 
+
+CREATE OR REPLACE VIEW Over20TakersExams AS (
+    SELECT course, date, SUM(takers) AS takers
+    FROM GradedExams
+    GROUP BY course, date
+    HAVING SUM(takers) >= 20
+    ORDER BY takers
+);
