@@ -1,19 +1,19 @@
-CREATE TABLE Kursresultat (
-    kurs CHAR(6),
-    kursnamn VARCHAR(255),
-    kursagare CHAR(10),
-    kursagarnamn VARCHAR(255),
-    prov INT,
-    provnamn VARCHAR(255),
-    poang FLOAT,
-    provdatum DATE,
-    betyg CHAR(4),
-    antal INT,
-    andel INT,
-    PRIMARY KEY (kurs, provdatum, prov, betyg)
+CREATE TABLE Results (
+    course CHAR(6),
+    course_name VARCHAR(255),
+    owner CHAR(10),
+    owner_name VARCHAR(255),
+    test INT,
+    test_name VARCHAR(255),
+    credits FLOAT,
+    date DATE,
+    grade CHAR(4),
+    takers INT,
+    proportion INT,
+    PRIMARY KEY (course, date, test, grade)
 
 );
 
-COPY Kursresultat
+COPY Results
     FROM '--WORKINGDIR--/rawdata.csv'
     WITH DELIMITER ';';
