@@ -15,5 +15,5 @@ CREATE TABLE Kursresultat (
 );
 
 COPY Kursresultat
-    FROM '/Users/hjort/Code/ChalmersGrades/db/rawdata.csv'
+    FROM '--WORKINGDIR--/rawdata.csv'
     WITH DELIMITER ';';

@@ -43,5 +43,7 @@ createuser -s "$user"
 # Create new db
 createdb -U "$user" "$1"/"$2"
 
+sed 's:--WORKINGDIR--:'`pwd`':' < init_db.sql > init_db.sql
+
 # Initiate based on an init file
 psql -U "$user" --file=init_db.sql "$1"/"$2"
