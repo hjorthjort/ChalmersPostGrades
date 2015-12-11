@@ -3,7 +3,7 @@
 # install.sh directory databasename username
 
 # Terminate ongoing processes
-killall postgres
+pg_ctl -w -D "$1" stop
 
 # If there is a dir or file with the name we want for our datadir, delete it and create it again.
 rm -rf "$1"
