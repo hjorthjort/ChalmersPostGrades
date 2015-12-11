@@ -19,7 +19,7 @@ COPY Results
     WITH DELIMITER ';';
 
 CREATE OR REPLACE VIEW GradedExams AS (
-    SELECT course, course_name, test_name, date, takers, 
+    SELECT course, course_name, test_name, date, takers,
         CASE grade
             WHEN 'U' THEN '0'
             ELSE grade
@@ -27,7 +27,7 @@ CREATE OR REPLACE VIEW GradedExams AS (
     FROM Results
     WHERE test_name LIKE 'Tentamen%'
     ORDER BY course, date, grade
-); 
+);
 
 CREATE OR REPLACE VIEW Over20TakersExams AS (
     SELECT course, date, SUM(takers) AS takers
