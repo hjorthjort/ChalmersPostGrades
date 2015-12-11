@@ -25,7 +25,12 @@ CREATE OR REPLACE VIEW GradedExams AS (
             ELSE grade
         END as gradeNbr
     FROM Results
-    WHERE test_name LIKE 'Tentamen%'
+    WHERE test_name LIKE 'Tentamen%' AND course NOT IN
+        (SELECT course
+            FROM Results
+                WHERE test_name LIKE 'Tentamen%'
+            GROUP BY course, test_name
+            HAVING array_to_string(array_agg(grade), ',') LIKE '%G%')
     ORDER BY course, date, grade
 );
 
@@ -42,6 +47,5 @@ CREATE OR REPLACE VIEW GradedExamsAverages AS (
             SUM(takers * CAST(gradeNbr AS NUMERIC)) / SUM(takers) AS average
         FROM GradedExams
         WHERE (course, date) IN (SELECT course, date FROM Over20TakersExams)
-            AND gradeNbr ~ '^[0-9]'
         GROUP BY course, course_name, date
 );
