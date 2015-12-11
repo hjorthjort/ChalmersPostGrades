@@ -1,3 +1,4 @@
+-- The main table, modelling official data
 CREATE TABLE Results (
     course CHAR(6),
     course_name VARCHAR(255),
@@ -14,18 +15,22 @@ CREATE TABLE Results (
 
 );
 
+-- Import data into table
 COPY Results
     FROM '--WORKINGDIR--/rawdata.csv'
     WITH DELIMITER ';';
 
+-- A view that only shows grades for exams without letter grades
 CREATE OR REPLACE VIEW GradedExams AS (
     SELECT course, course_name, test_name, date, takers,
+        -- Replace grade 'U' with 0
         CASE grade
             WHEN 'U' THEN '0'
             ELSE grade
         END as gradeNbr
     FROM Results
     WHERE test_name LIKE 'Tentamen%' AND course NOT IN
+        -- Remove courses with letter grades (happen to be grades that have 'G' in them)
         (SELECT course
             FROM Results
                 WHERE test_name LIKE 'Tentamen%'
@@ -34,6 +39,7 @@ CREATE OR REPLACE VIEW GradedExams AS (
     ORDER BY course, date, grade
 );
 
+-- All exams that more than 20 people took
 CREATE OR REPLACE VIEW Over20TakersExams AS (
     SELECT course, date, SUM(takers) AS takers
     FROM GradedExams
@@ -42,6 +48,7 @@ CREATE OR REPLACE VIEW Over20TakersExams AS (
     ORDER BY takers
 );
 
+-- Average grade for courses in GradedExams
 CREATE OR REPLACE VIEW GradedExamsAverages AS (
         SELECT course, course_name AS name, date, SUM(takers) AS takers,
             SUM(takers * CAST(gradeNbr AS NUMERIC)) / SUM(takers) AS average
