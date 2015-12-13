@@ -51,3 +51,6 @@ psql -U "$user" --file=tmp_init_db.sql "$1"/"$2"
 
 # Remove temp file
 rm -f tmp_init_db.sql
+
+# Give user some instructions
+printf "\nDatabase created successfully! run \n\n\tpsql %s/%s %s\n\n to start using it\n" "$1" "$2" "$user"
